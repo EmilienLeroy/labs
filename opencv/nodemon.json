@@ -1,0 +1,5 @@
+{
+  "exec": "set DEBUG=app:*&& set NODE_ENV=development&& ts-node src/",
+  "extensions": ["ts"]
+}
+  
