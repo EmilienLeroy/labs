@@ -30,11 +30,26 @@ export default abstract class Game {
   }
 
   private newFrame() {
-    readline.moveCursor(this.stdout, 0, -1);
+    readline.moveCursor(this.stdout, 0, -100);
     this.stdout.clearLine(1);
     this.stdout.cursorTo(0);
     this.write('\u001B[?25l')
     if(this.onFrame) this.onFrame();
+  }
+
+  protected generateGrid(width: number, height: number): string[][] {
+    const grid = Array<null|(string|null[])>(height).fill(null);
+    return grid.map(() => Array(width).fill('k'))
+  }
+
+  protected writeGrid(grid: string[][]) {
+    grid.forEach((line) => {
+      line.forEach((cursor) => {
+        this.write(cursor);
+      })
+
+      this.write('\n');
+    });
   }
 
   protected write(data: string | Uint8Array) {

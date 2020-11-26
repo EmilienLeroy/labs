@@ -1,24 +1,46 @@
 import Game from "./Game";
 
 export default class Snake extends Game {
-  private snake: string;
+  private grid: string[][];
+  x: number;
+  y: number;
 
   constructor() {
     super();
-    this.snake = '-';
+    this.x = 0;
+    this.y = 0;
+    this.grid = this.generateGrid(10,10);
+    this.grid[this.x][this.y] = '-';
+    
   }
 
   protected onFrame() {
-    this.write(this.snake);
+    this.writeGrid(this.grid);
   }
 
   protected onKeypress(str: any, key: any) {
     if(key.name === 'right') {
-      this.snake = ' ' + this.snake;
+      this.grid = this.generateGrid(10,10);
+      this.y++;
+      this.grid[this.x][this.y] = '-';
     }
 
     if(key.name === 'left') {
-      this.snake = this.snake.substr(1);
+      this.grid = this.generateGrid(10,10);
+      this.y--;
+      this.grid[this.x][this.y] = '-';
+    }
+
+    if(key.name === 'up') {
+      this.grid = this.generateGrid(10,10);
+      this.x--;
+      this.grid[this.x][this.y] = '-';
+    }
+
+    if(key.name === 'down') {
+      this.grid = this.generateGrid(10,10);
+      this.x++;
+      this.grid[this.x][this.y] = '-';
     }
   }
 }
