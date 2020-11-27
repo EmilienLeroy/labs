@@ -1,5 +1,6 @@
 import { exit } from 'process';
 import * as readline from 'readline';
+import Grid from './Grid';
 
 export default abstract class Game {
   protected readonly fps: number;
@@ -37,13 +38,8 @@ export default abstract class Game {
     if(this.onFrame) this.onFrame();
   }
 
-  protected generateGrid(width: number, height: number): string[][] {
-    const grid = Array<null|(string|null[])>(height).fill(null);
-    return grid.map(() => Array(width).fill('k'))
-  }
-
-  protected writeGrid(grid: string[][]) {
-    grid.forEach((line) => {
+  protected writeGrid(grid: Grid) {
+    grid.layout.forEach((line) => {
       line.forEach((cursor) => {
         this.write(cursor);
       })

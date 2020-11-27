@@ -1,7 +1,8 @@
 import Game from "./Game";
+import Grid from "./Grid";
 
 export default class Snake extends Game {
-  private grid: string[][];
+  private grid: Grid;
   x: number;
   y: number;
 
@@ -9,9 +10,8 @@ export default class Snake extends Game {
     super();
     this.x = 0;
     this.y = 0;
-    this.grid = this.generateGrid(10,10);
-    this.grid[this.x][this.y] = '-';
-    
+    this.grid = new Grid({ width: 100, height: 10 });
+    this.grid.addItem({ name: 'snake', value: '-', x: 0, y: 0 });
   }
 
   protected onFrame() {
@@ -19,28 +19,21 @@ export default class Snake extends Game {
   }
 
   protected onKeypress(str: any, key: any) {
-    if(key.name === 'right') {
-      this.grid = this.generateGrid(10,10);
-      this.y++;
-      this.grid[this.x][this.y] = '-';
-    }
-
-    if(key.name === 'left') {
-      this.grid = this.generateGrid(10,10);
-      this.y--;
-      this.grid[this.x][this.y] = '-';
-    }
-
-    if(key.name === 'up') {
-      this.grid = this.generateGrid(10,10);
-      this.x--;
-      this.grid[this.x][this.y] = '-';
-    }
-
-    if(key.name === 'down') {
-      this.grid = this.generateGrid(10,10);
-      this.x++;
-      this.grid[this.x][this.y] = '-';
+    switch (key.name) {
+      case 'right':
+        return this.grid.moveItem('snake', 1, 0);
+        
+      case 'left':
+        return this.grid.moveItem('snake', -1, 0);
+      
+      case 'down':
+        return this.grid.moveItem('snake', 0, 1);
+      
+      case 'up':
+        return this.grid.moveItem('snake', 0, -1);
+      
+        default:
+        break;
     }
   }
 }
