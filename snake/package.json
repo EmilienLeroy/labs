@@ -1,7 +1,7 @@
 {
-  "name": "opencv",
+  "name": "snake",
   "version": "1.0.0",
-  "description": "",
+  "description": "A snake game in shell",
   "main": "index.js",
   "scripts": {
     "start": "ts-node ./src/index.ts",
@@ -9,7 +9,7 @@
     "build": "tsc"
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "@types/node": "^14.14.10",
     "ts-node": "^9.0.0",
