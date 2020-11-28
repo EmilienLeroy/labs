@@ -10,7 +10,7 @@ export default class Snake extends Game {
     super();
     this.x = 0;
     this.y = 0;
-    this.grid = new Grid({ width: 100, height: 10 });
+    this.grid = new Grid({ width: 30, height: 20, border: true });
     this.grid.addItem({ name: 'snake', value: '-', x: 0, y: 0 });
   }
 

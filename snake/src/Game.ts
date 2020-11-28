@@ -39,11 +39,8 @@ export default abstract class Game {
   }
 
   protected writeGrid(grid: Grid) {
-    grid.layout.forEach((line) => {
-      line.forEach((cursor) => {
-        this.write(cursor);
-      })
-
+    grid.layout.forEach((line, yIndex) => {
+      line.forEach((cursor, xIndex) => this.write(cursor));
       this.write('\n');
     });
   }
