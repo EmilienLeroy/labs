@@ -38,7 +38,7 @@ export default class Grid {
 
   public moveItem(name: string, x: number, y: number) {
     const item = this.getItemByName(name);
-    if (item) {
+    if (item && this.layout[item.y + y] && this.layout[item.y + y][item.x + x]) {
       this.layout[item.y][item.x] = this.layout[item.y + y][item.x + x];
       this.layout[item.y + y][item.x + x] = item.value;
       item.x = item.x + x;
