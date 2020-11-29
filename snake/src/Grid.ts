@@ -45,21 +45,20 @@ export default class Grid {
   public moveItem(name: string, x: number, y: number) {
     const item = this.getItemByName(name);
     if (item && this.layout[item.y + y] && this.layout[item.y + y][item.x + x]) {
-      if(this.border) {
-        if (item.y + y === 0 
-          || item.x + x === 0 
-          || item.y + y === this.layout.length - 1 
-          || item.x + x === this.layout[item.y + y].length - 1
-        ) {
-          return;
-        }
+      if(!this.isOutOfBorder({ ...item, x: item.x + x, y: item.y + y })) {
+        this.layout[item.y][item.x] = this.layout[item.y + y][item.x + x];
+        this.layout[item.y + y][item.x + x] = item.value;
+        item.x = item.x + x;
+        item.y = item.y + y;
       }
-      
-      this.layout[item.y][item.x] = this.layout[item.y + y][item.x + x];
-      this.layout[item.y + y][item.x + x] = item.value;
-      item.x = item.x + x;
-      item.y = item.y + y;
     }
+  }
+
+  private isOutOfBorder(item: GridItem) {
+    return this.border && (item.y === 0 
+      || item.x === 0 
+      || item.y === this.layout.length - 1 
+      || item.x === this.layout[item.y].length - 1);
   }
 
   private getItemByName(name: string) {
