@@ -9,12 +9,12 @@ export default abstract class Game {
   protected stdout: NodeJS.WriteStream & { fd: 1; };
   protected onKeypress?(str: any, key: any): void;
   protected onFrame?(): void;
+  protected onResize?(): void;
   
   constructor({ fps }: { fps?: number } = {}) {
-    this.fps =fps || 25;
+    this.fps = fps || 25;
     this.stdin = process.stdin;
     this.stdout = process.stdout;
-
   }
 
   public start() {
@@ -22,6 +22,7 @@ export default abstract class Game {
     readline.emitKeypressEvents(this.stdin);
     this.stdin.setRawMode(true);
     this.stdin.on('keypress', this.keyPress.bind(this));
+    this.stdout.on('resize', this.resize.bind(this));
     this.interval = setInterval(this.newFrame.bind(this), this.fps / 1000);
   }
 
@@ -31,17 +32,38 @@ export default abstract class Game {
   }
 
   private newFrame() {
-    readline.moveCursor(this.stdout, 0, -100);
-    this.stdout.clearLine(1);
-    this.stdout.cursorTo(0);
-    this.write('\u001B[?25l')
+    this.clear();
     if(this.onFrame) this.onFrame();
   }
 
+  private resize() {
+    this.clear();
+    this.stdout.clearScreenDown();
+    if(this.onResize) this.onResize();
+  }
+
+  private clear() {
+    const height = this.stdout.getWindowSize()[1];
+    readline.moveCursor(this.stdout, 0, -height);
+    this.stdout.clearLine(0);
+    this.write('\u001B[?25l');
+  }
+
+  
+
   protected writeGrid(grid: Grid) {
-    grid.layout.forEach((line, yIndex) => {
-      line.forEach((cursor, xIndex) => this.write(cursor));
-      this.write('\n');
+    const [ width, height ] = this.stdout.getWindowSize();
+    grid.layout.forEach((row, rowIndex) => {
+      row.forEach((col, colIndex) => {
+        if (width > colIndex && height > rowIndex + 1) {
+          this.write(col);
+        } 
+      });
+
+      if (height > rowIndex + 1) {
+        this.write('\n');
+      }
+      
     });
   }
 
