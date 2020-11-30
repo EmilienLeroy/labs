@@ -53,17 +53,29 @@ export default abstract class Game {
 
   protected writeGrid(grid: Grid) {
     const [ width, height ] = this.stdout.getWindowSize();
+    const heightOffset = grid.itemFollow ? (grid.itemFollow.y - height) + 3 : 0;
+    const widthOffset = grid.itemFollow ? (grid.itemFollow.x - width) + 3 : 0;
     grid.layout.forEach((row, rowIndex) => {
       row.forEach((col, colIndex) => {
-        if (width > colIndex && height > rowIndex + 1) {
+        if (
+            (
+              width > colIndex && 
+              height > rowIndex + 1 && 
+              widthOffset < colIndex && 
+              heightOffset < rowIndex
+            ) || (
+              widthOffset > 0 && 
+              widthOffset + width > colIndex  && 
+              height > rowIndex + 1
+              )
+            ) {
           this.write(col);
-        } 
+        }
       });
 
-      if (height > rowIndex + 1) {
-        this.write('\n');
+      if (height > rowIndex + 1 && heightOffset + height < rowIndex) {
+        return this.write('\n');
       }
-      
     });
   }
 

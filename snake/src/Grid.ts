@@ -10,6 +10,7 @@ interface GridItem {
   value: string;
   x: number;
   y: number;
+  follow?: boolean;
 }
 
 export default class Grid {
@@ -33,6 +34,10 @@ export default class Grid {
     this.border = border;
     this.layout = this.generate();
     this.items = [];
+  }
+
+  public get itemFollow() {
+    return this.items.find(item => item.follow);
   }
 
   public addItem(item: GridItem) {
