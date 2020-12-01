@@ -53,27 +53,21 @@ export default abstract class Game {
 
   protected writeGrid(grid: Grid) {
     const [ width, height ] = this.stdout.getWindowSize();
-    const heightOffset = grid.itemFollow ? (grid.itemFollow.y - height) + 3 : 0;
-    const widthOffset = grid.itemFollow ? (grid.itemFollow.x - width) + 3 : 0;
+    const [ widthOffset, heightOffset ] = this.getItemOffset(grid);
     grid.layout.forEach((row, rowIndex) => {
       row.forEach((col, colIndex) => {
         if (
-            (
-              width > colIndex && 
-              height > rowIndex + 1 && 
-              widthOffset < colIndex && 
-              heightOffset < rowIndex
-            ) || (
-              widthOffset > 0 && 
-              widthOffset + width > colIndex  && 
-              height > rowIndex + 1
-              )
-            ) {
+          width > colIndex && height > rowIndex + 1 && widthOffset <= colIndex && heightOffset <= rowIndex ||
+          width <= colIndex && height > rowIndex + 1 && widthOffset > colIndex - width ||
+          width > colIndex && height < rowIndex + 1 && heightOffset > rowIndex + 1 - height
+        ) {
           this.write(col);
+        } else {
+          this.stdout.clearLine(1);
         }
       });
 
-      if (height > rowIndex + 1 && heightOffset + height < rowIndex) {
+      if (height > rowIndex + 1) {
         return this.write('\n');
       }
     });
@@ -83,4 +77,15 @@ export default abstract class Game {
     this.stdout.write(data);
   }
 
+  private getItemOffset(grid: Grid) {
+    const [ width, height ] = this.stdout.getWindowSize();
+    if(grid.itemFollow && (grid.layout.length > height || grid.layout[0].length > width)) {
+      return [
+        Math.round(grid.itemFollow.x - width + width / 4),
+        Math.round(grid.itemFollow.y - height + height / 4)
+      ];
+    }
+
+    return [0, 0];
+  }
 }

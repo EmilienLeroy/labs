@@ -5,7 +5,7 @@ interface GridConstructor {
   border?: boolean;
 }
 
-interface GridItem {
+export interface GridItem {
   name: string;
   value: string;
   x: number;
