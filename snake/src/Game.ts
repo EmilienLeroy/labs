@@ -59,15 +59,18 @@ export default abstract class Game {
         if (
           width > colIndex && height > rowIndex + 1 && widthOffset <= colIndex && heightOffset <= rowIndex ||
           width <= colIndex && height > rowIndex + 1 && widthOffset > colIndex - width ||
-          width > colIndex && height < rowIndex + 1 && heightOffset > rowIndex + 1 - height
-        ) {
+          width > colIndex && height < rowIndex + 1 && heightOffset > rowIndex - height
+        ) {                   
           this.write(col);
         } else {
           this.stdout.clearLine(1);
         }
       });
 
-      if (height > rowIndex + 1) {
+      if (
+        height > rowIndex + 1 && heightOffset <= rowIndex ||
+        height < rowIndex + 1 && heightOffset > rowIndex - height
+      ) {
         return this.write('\n');
       }
     });
