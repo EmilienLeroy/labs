@@ -18,6 +18,14 @@ export default class Snake extends Game {
   }
 
   protected onFrame() {
+    const snake = this.grid.getItemByName('snake');
+    const point = this.grid.getItemByName('point');
+
+    if (snake!.x === point!.x && snake!.y === point!.y) {
+      this.grid.updateItem('point', this.getRandomPointPos());
+      this.score ++;
+    }
+
     this.write(`Score: ${this.score} \n`);
     this.writeGrid(this.grid);
   }

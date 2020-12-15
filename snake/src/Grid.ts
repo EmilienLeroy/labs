@@ -54,14 +54,27 @@ export default class Grid {
     this.items.push(item);
   }
 
+  public updateItem(name: string, partialItem: Partial<GridItem>) {
+    this.items = this.items.map((item) => {
+      if (item.name === name) {
+        
+        if (partialItem.x && partialItem.y) {
+          this.layout[partialItem.y][partialItem.x] = item.value;
+          this.layout[item.y][item.x] = this.fill;
+        }
+
+        item = { ...item, ...partialItem };
+      }
+
+      return item;
+    });
+  }
+
   public moveItem(name: string, x: number, y: number) {
     const item = this.getItemByName(name);
     if (item && this.layout[item.y + y] && this.layout[item.y + y][item.x + x]) {
       if (!this.isOutOfBorder({ ...item, x: item.x + x, y: item.y + y })) {
-        this.layout[item.y][item.x] = this.layout[item.y + y][item.x + x];
-        this.layout[item.y + y][item.x + x] = item.value;
-        item.x = item.x + x;
-        item.y = item.y + y;
+        this.updateItem(name, { x: item.x + x, y: item.y + y });
       }
     }
   }
@@ -73,7 +86,7 @@ export default class Grid {
       || item.x === this.layout[item.y].length - 1);
   }
 
-  private getItemByName(name: string) {
+  public getItemByName(name: string) {
     return this.items.find((item: GridItem) => item.name === name);
   }
 
