@@ -7,17 +7,27 @@ export default class Snake extends Game {
   private grid: Grid;
   private speed: number = 50; 
   private direction: SnakeDirection = 'right';
+  private score: number = 0;
 
   constructor() {
     super();
     this.grid = new Grid({ width: 50, height: 20, border: true });
-    this.grid.addItem({ name: 'snake', value: '-', x: 0, y: 0, follow: true });
-    this.grid.addItem({ name: 'start', value: '*', x: 25, y: 10 });
+    this.grid.addItem({ name: 'snake', value: '▀', x: 0, y: 0, follow: true });
+    this.grid.addItem({ name: 'point', value: '*', ...this.getRandomPointPos()});
     setInterval(this.move.bind(this), this.speed);
   }
 
   protected onFrame() {
+    this.write(`Score: ${this.score} \n`);
     this.writeGrid(this.grid);
+  }
+
+  private getRandomPointPos() {
+    const { width, height } = this.grid.length;
+    return {
+      x: Math.floor(Math.random() * Math.floor(width)),
+      y: Math.floor(Math.random() * Math.floor(height)), 
+    };
   }
 
   private move() {

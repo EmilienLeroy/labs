@@ -40,6 +40,13 @@ export default class Grid {
     return this.items.find(item => item.follow);
   }
 
+  public get length() {
+    return {
+      width: this.width,
+      height: this.height,
+    }
+  }
+
   public addItem(item: GridItem) {
     item.x = this.border ? item.x + 1 : item.x;
     item.y = this.border ? item.y + 1 : item.y
@@ -50,7 +57,7 @@ export default class Grid {
   public moveItem(name: string, x: number, y: number) {
     const item = this.getItemByName(name);
     if (item && this.layout[item.y + y] && this.layout[item.y + y][item.x + x]) {
-      if(!this.isOutOfBorder({ ...item, x: item.x + x, y: item.y + y })) {
+      if (!this.isOutOfBorder({ ...item, x: item.x + x, y: item.y + y })) {
         this.layout[item.y][item.x] = this.layout[item.y + y][item.x + x];
         this.layout[item.y + y][item.x + x] = item.value;
         item.x = item.x + x;
@@ -70,7 +77,7 @@ export default class Grid {
     return this.items.find((item: GridItem) => item.name === name);
   }
 
-  public generate(): string[][] {
+  private generate(): string[][] {
     const height = this.border ? this.height + 2 : this.height;
     const width = this.border ? this.width + 2 : this.width;
     const rows = Array<null>(height).fill(null);
