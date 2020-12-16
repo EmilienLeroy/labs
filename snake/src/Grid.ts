@@ -6,6 +6,7 @@ interface GridConstructor {
 }
 
 export interface GridItem {
+  id: number;
   name: string;
   value: string;
   x: number;
@@ -54,13 +55,15 @@ export default class Grid {
     this.items.push(item);
   }
 
-  public updateItem(name: string, partialItem: Partial<GridItem>) {
+  public updateItem(id: number, partialItem: Partial<GridItem>, fill: boolean = true) {
     this.items = this.items.map((item) => {
-      if (item.name === name) {
+      if (item.id === id) {
         
         if (partialItem.x && partialItem.y) {
           this.layout[partialItem.y][partialItem.x] = item.value;
-          this.layout[item.y][item.x] = this.fill;
+          if (fill) {
+            this.layout[item.y][item.x] = this.fill;
+          }
         }
 
         item = { ...item, ...partialItem };
@@ -70,11 +73,11 @@ export default class Grid {
     });
   }
 
-  public moveItem(name: string, x: number, y: number) {
-    const item = this.getItemByName(name);
+  public moveItem(id: number, x: number, y: number) {
+    const item = this.getItemById(id);
     if (item && this.layout[item.y + y] && this.layout[item.y + y][item.x + x]) {
       if (!this.isOutOfBorder({ ...item, x: item.x + x, y: item.y + y })) {
-        this.updateItem(name, { x: item.x + x, y: item.y + y });
+        this.updateItem(id, { x: item.x + x, y: item.y + y });
       }
     }
   }
@@ -88,6 +91,10 @@ export default class Grid {
 
   public getItemByName(name: string) {
     return this.items.find((item: GridItem) => item.name === name);
+  }
+
+  public getItemById(id: number) {
+    return this.items.find((item: GridItem) => item.id === id);
   }
 
   private generate(): string[][] {

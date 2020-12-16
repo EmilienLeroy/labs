@@ -9,22 +9,41 @@ export default class Snake extends Game {
   private speed: number = 50; 
   private direction: SnakeDirection = 'right';
   private score: number = 0;
+  private snakeLength: number = 1;
+  private snakeFill: string = '▀';
 
   constructor() {
     super();
     this.grid = new Grid({ width: 50, height: 20, border: true });
-    this.grid.addItem({ name: 'snake', value: '▀', x: 0, y: 0, follow: true });
-    this.grid.addItem({ name: 'point', value: '*', ...this.getRandomPointPos()});
+    this.grid.addItem({ id: 0, name: 'point', value: '*', ...this.getRandomPointPos()});
+    this.grid.addItem({ 
+      id: this.snakeLength, 
+      name: 'snake', 
+      value: this.snakeFill, 
+      x: 0, 
+      y: 0, 
+      follow: true 
+    });
+    
     setInterval(this.move.bind(this), this.speed);
   }
 
-  protected onFrame() {
-    const snake = this.grid.getItemByName('snake');
-    const point = this.grid.getItemByName('point');
+  private get snakeHead() {
+    return this.grid.getItemById(1)!;
+  }
 
-    if (snake!.x === point!.x && snake!.y === point!.y) {
-      this.grid.updateItem('point', this.getRandomPointPos());
-      this.score ++;
+  private get snakeEnd() {
+    return this.grid.getItemById(this.snakeLength)!;
+  }
+
+  private get point() {
+    return this.grid.getItemByName('point')!;
+  }
+
+  protected onFrame() {
+
+    if (this.snakeHead.x === this.point.x && this.snakeHead.y === this.point.y) {
+      this.onCollision();
     }
 
     this.write(`Score: ${this.score} \n`);
@@ -39,19 +58,51 @@ export default class Snake extends Game {
     };
   }
 
+  private onCollision() {
+    this.grid.addItem({
+      id: this.snakeLength + 1,
+      name: `snake-${this.snakeLength + 1}`,
+      value: this.snakeFill,
+      x: this.snakeEnd.x - 1,
+      y: this.snakeEnd.y - 1,
+    });
+
+    this.grid.updateItem(0, this.getRandomPointPos());
+    this.snakeLength ++;
+    this.score ++;
+  }
+
   private move() {
     switch (this.direction) {
       case 'right':
-        return this.grid.moveItem('snake', 1, 0);
+        return this.moveSnake(1, 0);
       
       case 'left':
-        return this.grid.moveItem('snake', -1, 0);
+        return this.moveSnake(-1, 0);
         
       case 'up':
-        return this.grid.moveItem('snake', 0, -1);
+        return this.moveSnake(0, -1);
 
       case 'down':
-        return this.grid.moveItem('snake', 0, 1);
+        return this.moveSnake(0, 1);
+    }
+  }
+
+  public moveSnake(x: number, y: number) {
+    for (let index = 1; index <= this.snakeLength; index ++) {
+      const previousSnake = this.grid.getItemById(index - 1);
+      if (index === 1) {
+        this.grid.updateItem(index, {
+          x: this.snakeHead.x + x,
+          y: this.snakeHead.y + y
+        }, this.snakeLength === index);
+      } else if (previousSnake && index !== 1) {
+        this.grid.updateItem(index, {
+          x: previousSnake.x, 
+          y: previousSnake.y
+        }, this.snakeLength === index);
+      }
+      
     }
   }
 
