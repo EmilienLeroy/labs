@@ -1,5 +1,6 @@
 import Game from "./Game";
 import Grid from "./Grid";
+import { getRandomInt } from "./utils";
 
 type SnakeDirection = 'left' | 'right' | 'up' | 'down';
 
@@ -33,8 +34,8 @@ export default class Snake extends Game {
   private getRandomPointPos() {
     const { width, height } = this.grid.length;
     return {
-      x: Math.floor(Math.random() * Math.floor(width)),
-      y: Math.floor(Math.random() * Math.floor(height)), 
+      x: getRandomInt(1, width),
+      y: getRandomInt(1, height), 
     };
   }
 
