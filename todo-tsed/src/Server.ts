@@ -1,7 +1,8 @@
 import {Env} from "@tsed/core";
 import {Configuration, Inject} from "@tsed/di";
-import {$log, PlatformApplication} from "@tsed/common";
+import {$log, BeforeRoutesInit, PlatformApplication} from "@tsed/common";
 import "@tsed/platform-express"; // /!\ keep this import
+import "@tsed/mongoose"; 
 import bodyParser from "body-parser";
 import compress from "compression";
 import cookieParser from "cookie-parser";
@@ -38,8 +39,15 @@ if (isProduction) {
   logger: {
     disableRoutesSummary: isProduction
   },
+  mongoose: {
+    url: "mongodb://127.0.0.1:27017/todo",
+    connectionOptions: {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    }
+  },
   mount: {
-    "/rest": [
+    "/": [
       `${rootDir}/controllers/**/*.ts`
     ]
   },
@@ -47,7 +55,7 @@ if (isProduction) {
     "**/*.spec.ts"
   ]
 })
-export class Server {
+export class Server implements BeforeRoutesInit {
   @Inject()
   app: PlatformApplication;
 
