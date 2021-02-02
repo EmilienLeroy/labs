@@ -1,5 +1,8 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import './index.css'
+import http from './plugins/http';
 
-createApp(App).mount('#app')
+const app = createApp(App);
+app.use(http);
+app.mount('#app');
