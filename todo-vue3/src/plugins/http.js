@@ -2,6 +2,7 @@ export default {
   install(app) {
     const http = fetchAbsolute(fetch)(import.meta.env.VITE_API_URL);
     app.config.globalProperties.$http = http;
+    app.provide('http', http);
   }
 }
 
