@@ -1,6 +1,6 @@
 export default {
   install(app) {
-    const http = fetchAbsolute(fetch)('http://localhost:8083');
+    const http = fetchAbsolute(fetch)(import.meta.env.VITE_API_URL);
     app.config.globalProperties.$http = http;
   }
 }
