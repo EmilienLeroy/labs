@@ -1,6 +1,6 @@
 import { BodyParams, Controller, Get, Inject, Post } from '@tsed/common';
 import { MongooseModel } from '@tsed/mongoose';
-import { Todo } from '../models/Todo';
+import { Todo } from './Todo';
 
 @Controller('/todo')
 export class TodoController {
