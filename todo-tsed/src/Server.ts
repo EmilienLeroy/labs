@@ -1,7 +1,7 @@
 import {Env} from "@tsed/core";
 import {Configuration, Inject} from "@tsed/di";
 import {$log, BeforeRoutesInit, PlatformApplication} from "@tsed/common";
-import { TodoController } from './todos';
+import { TodoController, TodoService } from './todos';
 import "@tsed/platform-express"; // /!\ keep this import
 import "@tsed/mongoose"; 
 import "@tsed/swagger";
@@ -53,6 +53,9 @@ if (isProduction) {
       TodoController,
     ]
   },
+  componentsScan: [
+    TodoService as any,
+  ],
   swagger: [
     {
       path: "/v2/docs",
