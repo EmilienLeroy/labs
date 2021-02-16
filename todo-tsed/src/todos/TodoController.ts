@@ -1,5 +1,6 @@
 import { BodyParams, Controller, Get, Inject, PathParams, Post, Put, $log, Delete } from '@tsed/common';
 import { InternalServerError, NotFound } from '@tsed/exceptions';
+import { Groups, Returns } from '@tsed/schema';
 import { Todo } from './Todo';
 import { TodoService } from './TodoService';
 
@@ -10,6 +11,7 @@ export class TodoController {
   private todoService: TodoService;
 
   @Get('/')
+  @Returns(200, Array).Of(Todo).Groups('read')
   public async getTodos() {
     try {
       return await this.todoService.getTodos();  
@@ -19,7 +21,8 @@ export class TodoController {
   }
 
   @Post('/')
-  public async addTodo(@BodyParams() todo: { name: string }) {
+  @Returns(201, Todo).Groups('read')
+  public async addTodo(@BodyParams() @Groups('create') todo: Todo) {
     try {
       return await this.todoService.addTodo({ ...todo, do: false });
     } catch (error) {
@@ -28,7 +31,8 @@ export class TodoController {
   }
 
   @Put('/:id')
-  public async updateTodo(@PathParams("id") id: string, @BodyParams() todo: Todo) {
+  @Returns(200)
+  public async updateTodo(@PathParams("id") id: string, @BodyParams() @Groups('update') todo: Todo) {
     await this.todoService.todoExist(id);
 
     try {
@@ -39,6 +43,7 @@ export class TodoController {
   }
 
   @Delete('/:id')
+  @Returns(200)
   public async deleteTodo(@PathParams("id") id: string) {
     await this.todoService.todoExist(id);
 

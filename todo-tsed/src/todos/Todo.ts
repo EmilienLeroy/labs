@@ -1,5 +1,5 @@
 import { Model, ObjectID } from '@tsed/mongoose';
-import { Property, Required } from '@tsed/schema';
+import { Groups, Property, Required } from '@tsed/schema';
 
 @Model({
   collection: 'todos',
@@ -9,14 +9,17 @@ import { Property, Required } from '@tsed/schema';
 })
 export class Todo {
   @ObjectID()
+  @Groups('read')
   public _id: string;
 
   @Required()
   @Property()
+  @Groups('read', 'create', 'update')
   public name: string;
 
   @Required()
   @Property()
+  @Groups('read', 'update')
   public do: boolean;
 
 }
