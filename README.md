@@ -10,6 +10,7 @@ In this repository you will find all my experience I made during my stream on [t
 
 ## Experiences
 
-* **euler :** [Project Euler](https://projecteuler.net/about) made in C++
-* **snake :** A snake game into the shell made in NodeJS
+* **euler :** [Project Euler](https://projecteuler.net/about) made in C++.
+* **snake :** A snake game into the shell made in NodeJS.
+* **todo :** A simple todo app with many framework. 
 
