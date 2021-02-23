@@ -3,7 +3,7 @@ import { ref, onMounted, inject } from 'vue';
 export default function useTodo() {
   const http = inject('http');
   let name = ref('');
-  const todos = ref([]);
+  let todos = ref([]);
 
   onMounted(async () => {
     todos.value.push(...await getTodo());
@@ -19,10 +19,15 @@ export default function useTodo() {
     todos.value.push(await res.json());
   }
 
+  const fetchTodo = async () => {
+    todos.value = await getTodo();
+  }
+
   return {
     name, 
     todos,
     addTodo,
     getTodo,
+    fetchTodo,
   }
 };

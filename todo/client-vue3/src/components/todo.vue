@@ -1,7 +1,8 @@
 <template>
-  <div>
-    {{ name }}
-  </div>
+  <label class="form-checkbox">
+    <input type="checkbox">
+    <i class="form-icon"></i> {{ name }}
+  </label>
 </template>
 
 

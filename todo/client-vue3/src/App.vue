@@ -1,5 +1,7 @@
 <template>
-  <todos></todos>
+  <div class="app bg-gray">
+    <todos />
+  </div>
 </template>
 
 <script>
@@ -12,3 +14,13 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.app {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100vh;
+}
+</style>

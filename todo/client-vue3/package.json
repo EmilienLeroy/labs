@@ -6,6 +6,7 @@
     "build": "vite build"
   },
   "dependencies": {
+    "spectre.css": "^0.5.9",
     "vue": "^3.0.4"
   },
   "devDependencies": {
