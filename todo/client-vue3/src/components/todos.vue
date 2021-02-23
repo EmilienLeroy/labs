@@ -4,8 +4,10 @@
     <div class="todos__content">
       <todo 
         v-for="todo in todos" 
-        :key="todo.id" 
+        :key="todo._id" 
+        :id="todo._id"
         :name="todo.name" 
+        :checked="todo.do"
       />
     </div>
     <todo-form @submit="fetchTodo" />

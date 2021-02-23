@@ -19,6 +19,11 @@ export default function useTodo() {
     todos.value.push(await res.json());
   }
 
+  const checkTodo = async (todo) => {
+    const res = await http(`/todo/${todo.id}`,'PUT', { name: todo.name, do: todo.checked });
+    return res.json();
+  }
+
   const fetchTodo = async () => {
     todos.value = await getTodo();
   }
@@ -29,5 +34,6 @@ export default function useTodo() {
     addTodo,
     getTodo,
     fetchTodo,
+    checkTodo,
   }
 };
