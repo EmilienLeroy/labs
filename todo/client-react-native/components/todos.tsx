@@ -4,9 +4,8 @@ import { View, Text, TextInput, StyleSheet, useWindowDimensions, TouchableOpacit
 
 const Todos = () => {
   const [todos, setTodos] = useState<TodoState[]>([]);
-
+  const [title, setTitle] = useState<string>('');
   const fullWidth = useWindowDimensions().width;
-
   const style = StyleSheet.create({
     todos: {
       flex: 1,
@@ -37,7 +36,14 @@ const Todos = () => {
   })
 
   const onPress = () => {
-    console.log('ok')
+    setTodos(() => [
+      ...todos, 
+      { 
+        id: todos.length, 
+        title: title, 
+        check: false 
+      }
+    ]);
   }
 
   return (
@@ -55,7 +61,12 @@ const Todos = () => {
         }
       </View>
       <View style={ style.form }>
-        <TextInput style={ style.input } placeholder='What I need to do ?'></TextInput>
+        <TextInput 
+          onChangeText={ setTitle }
+          value={ title } 
+          style={ style.input } 
+          placeholder='What I need to do ?' 
+        />
         <TouchableOpacity style={ style.btn } onPress={ onPress } >
           <Text style={{ color: 'white' }}>Send</Text>
         </TouchableOpacity>
