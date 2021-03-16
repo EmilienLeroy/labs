@@ -1,4 +1,5 @@
 import React from 'react';
+import Todo from './todo';
 import { View, Text, TextInput, StyleSheet, useWindowDimensions, TouchableOpacity  } from 'react-native';
 
 const Todos = () => {
@@ -39,7 +40,9 @@ const Todos = () => {
 
   return (
     <View style={ style.todos }>
-      <View style={ style.content }></View>
+      <View style={ style.content }>
+        <Todo id={ 1 } title={ 'Le todo' } check={ false }></Todo>
+      </View>
       <View style={ style.form }>
         <TextInput style={ style.input } placeholder='What I need to do ?'></TextInput>
         <TouchableOpacity style={ style.btn } onPress={ onPress } >
