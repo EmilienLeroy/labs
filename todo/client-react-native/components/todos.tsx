@@ -1,8 +1,10 @@
-import React from 'react';
-import Todo from './todo';
+import React, { useState } from 'react';
+import Todo, { TodoState } from './todo';
 import { View, Text, TextInput, StyleSheet, useWindowDimensions, TouchableOpacity  } from 'react-native';
 
 const Todos = () => {
+  const [todos, setTodos] = useState<TodoState[]>([]);
+
   const fullWidth = useWindowDimensions().width;
 
   const style = StyleSheet.create({
@@ -41,7 +43,16 @@ const Todos = () => {
   return (
     <View style={ style.todos }>
       <View style={ style.content }>
-        <Todo id={ 1 } title={ 'Le todo' } check={ false }></Todo>
+        { 
+          todos.map(todo => {
+            return <Todo 
+              key={ todo.id }
+              id={ todo.id } 
+              title={ todo.title } 
+              check={ todo.check } 
+            />
+          }) 
+        }
       </View>
       <View style={ style.form }>
         <TextInput style={ style.input } placeholder='What I need to do ?'></TextInput>
