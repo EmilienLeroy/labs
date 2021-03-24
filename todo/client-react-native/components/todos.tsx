@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Todo, { TodoState } from './todo';
 import { View, Text, TextInput, StyleSheet, useWindowDimensions, TouchableOpacity  } from 'react-native';
+import { http } from '../plugins/http';
 
 const Todos = () => {
   const [todos, setTodos] = useState<TodoState[]>([]);
@@ -35,13 +36,20 @@ const Todos = () => {
     }
   })
 
+  useEffect(() => {
+    (async () => {
+      const { data } = await http.get('/todo');
+      setTodos(data);
+    })()
+  },[])
+
   const onPress = () => {
     setTodos(() => [
       ...todos, 
       { 
         id: todos.length, 
-        title: title, 
-        check: false 
+        name: title, 
+        do: false 
       }
     ]);
   }
@@ -54,8 +62,8 @@ const Todos = () => {
             return <Todo 
               key={ todo.id }
               id={ todo.id } 
-              title={ todo.title } 
-              check={ todo.check } 
+              name={ todo.name } 
+              do={ todo.do } 
             />
           }) 
         }
