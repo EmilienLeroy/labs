@@ -21,7 +21,13 @@ const Todo = (props: TodoState) => {
 
   return (
     <View style={{ flexDirection: 'row', margin: 15 }}>
-      <Switch onValueChange={ toggleSwitch } value={ isCheck }  />
+      <Switch 
+        onValueChange={ toggleSwitch } 
+        value={ isCheck }
+        trackColor={{ false: "#D0D0D0", true: "rgba(132, 94, 194, 0.3)" }}
+        thumbColor={isCheck ? "#794BC4" : "#767577"} 
+        activeThumbColor="#794BC4"
+      />
       <Text style={{ marginHorizontal: 20 }}>{ props.name }</Text>
     </View>
   )
