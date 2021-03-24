@@ -43,15 +43,14 @@ const Todos = () => {
     })()
   },[])
 
-  const onPress = () => {
-    setTodos(() => [
-      ...todos, 
-      { 
-        _id: todos.length, 
-        name: title, 
-        do: false 
-      }
-    ]);
+  const onPress = async () => {
+    try {
+      const { data } = await http.post('/todo', { name: title })
+      setTodos(() => [...todos, data]); 
+      setTitle('');
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (
