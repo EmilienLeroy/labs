@@ -1,15 +1,23 @@
 import React, { useState } from 'react';
 import { View, Text, Switch } from 'react-native';
+import { http } from '../plugins/http';
 
 export interface TodoState {
-  id: number, 
+  _id: number, 
   name: string, 
   do: boolean,
 }
 
 const Todo = (props: TodoState) => {
   const [isCheck, setCheck] = useState(props.do);
-  const toggleSwitch = () => setCheck(previousState => !previousState);
+  const toggleSwitch = async () => {
+    try {
+      await http.put(`/todo/${props._id}`, { ...props, do: !isCheck });
+      setCheck(!isCheck);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <View style={{ flexDirection: 'row', margin: 15 }}>

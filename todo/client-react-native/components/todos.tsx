@@ -47,7 +47,7 @@ const Todos = () => {
     setTodos(() => [
       ...todos, 
       { 
-        id: todos.length, 
+        _id: todos.length, 
         name: title, 
         do: false 
       }
@@ -60,8 +60,8 @@ const Todos = () => {
         { 
           todos.map(todo => {
             return <Todo 
-              key={ todo.id }
-              id={ todo.id } 
+              key={ todo._id }
+              _id={ todo._id } 
               name={ todo.name } 
               do={ todo.do } 
             />
