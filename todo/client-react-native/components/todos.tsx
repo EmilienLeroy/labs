@@ -1,31 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import Todo, { TodoState } from './todo';
-import { View, Text, TextInput, StyleSheet, useWindowDimensions, TouchableOpacity  } from 'react-native';
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, ScrollView  } from 'react-native';
 import { http } from '../plugins/http';
 
 const Todos = () => {
   const [todos, setTodos] = useState<TodoState[]>([]);
   const [title, setTitle] = useState<string>('');
-  const fullWidth = useWindowDimensions().width;
   const style = StyleSheet.create({
-    todos: {
-      flex: 1,
-      width: fullWidth
-    },
-    content: {
-      flex: 1,
-    },
     input: {
       backgroundColor: 'rgba(132, 94, 194, 0.3)',
       borderRadius: 10,
       padding: 10,
-      width: '100%'
+      width: '100%',
     },
     form: {
-      width: fullWidth, 
+      position: 'absolute',
       padding: 20,
       flexDirection: 'row',
       alignItems: 'center',
+      width: '100%',
+      bottom: 0,
+      backgroundColor: 'white',
     },
     btn: {
       marginLeft: 10,
@@ -38,15 +33,15 @@ const Todos = () => {
 
   useEffect(() => {
     (async () => {
-      const { data } = await http.get('/todo');
-      setTodos(data);
+      const { data } = await http.get<TodoState[]>('/todo');
+      setTodos(data.reverse());
     })()
   },[])
 
   const onPress = async () => {
     try {
       const { data } = await http.post('/todo', { name: title })
-      setTodos(() => [...todos, data]); 
+      setTodos([data, ...todos]); 
       setTitle('');
     } catch (error) {
       console.log(error);
@@ -54,8 +49,8 @@ const Todos = () => {
   }
 
   return (
-    <View style={ style.todos }>
-      <View style={ style.content }>
+    <View>
+      <ScrollView style={{ height: '100vh' }}>
         { 
           todos.map(todo => {
             return <Todo 
@@ -66,7 +61,7 @@ const Todos = () => {
             />
           }) 
         }
-      </View>
+      </ScrollView>
       <View style={ style.form }>
         <TextInput 
           onChangeText={ setTitle }
