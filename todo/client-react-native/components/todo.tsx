@@ -1,15 +1,11 @@
 import React, { useState } from 'react';
 import { View, Text, Switch } from 'react-native';
 import { http } from '../plugins/http';
-
-export interface TodoState {
-  _id: number, 
-  name: string, 
-  do: boolean,
-}
+import { todoComposable, TodoState } from '../composable/TodoComposable';
 
 const Todo = (props: TodoState) => {
-  const [isCheck, setCheck] = useState(props.do);
+  const { getCheck } = todoComposable();
+  const [isCheck, setCheck] = getCheck(props);
   const toggleSwitch = async () => {
     try {
       await http.put(`/todo/${props._id}`, { ...props, do: !isCheck });
@@ -20,7 +16,21 @@ const Todo = (props: TodoState) => {
   }
 
   return (
-    <View style={{ flexDirection: 'row', margin: 15 }}>
+    <View style={{ 
+      flexDirection: 'row', 
+      marginHorizontal: 15,
+      marginVertical: 5,
+      padding: 15,
+      elevation: 15,
+      shadowColor: "#0000004a",
+      shadowOffset: {
+        width: 0,
+        height: 3,
+      },
+      shadowOpacity: 0.29,
+      shadowRadius: 4.65,
+      borderRadius: 10
+    }}>
       <Switch 
         onValueChange={ toggleSwitch } 
         value={ isCheck }

@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import Todo, { TodoState } from './todo';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, ScrollView  } from 'react-native';
+import Todo from './todo';
+import { View, Text, TextInput, StyleSheet, useWindowDimensions, TouchableOpacity, ScrollView  } from 'react-native';
 import { http } from '../plugins/http';
+import { TodoState } from '../composable/TodoComposable';
 
 const Todos = () => {
   const [todos, setTodos] = useState<TodoState[]>([]);
-  const [title, setTitle] = useState<string>('');
+  const [title, setTitle] = useState<string>(''); 
   const style = StyleSheet.create({
     input: {
-      backgroundColor: 'rgba(132, 94, 194, 0.3)',
+      backgroundColor: 'white',
       borderRadius: 10,
       padding: 10,
       width: '100%',
@@ -20,7 +21,9 @@ const Todos = () => {
       alignItems: 'center',
       width: '100%',
       bottom: 0,
-      backgroundColor: 'white',
+      backgroundColor: '#3CBEA9',
+      borderTopLeftRadius: 20,
+      borderTopRightRadius: 20,
     },
     btn: {
       marginLeft: 10,
@@ -50,7 +53,7 @@ const Todos = () => {
 
   return (
     <View>
-      <ScrollView style={{ height: '100vh' }}>
+      <ScrollView style={{ height: useWindowDimensions().height }}>
         { 
           todos.map(todo => {
             return <Todo 
