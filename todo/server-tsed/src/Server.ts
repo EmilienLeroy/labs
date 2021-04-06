@@ -11,6 +11,9 @@ import cookieParser from "cookie-parser";
 import methodOverride from "method-override";
 import cors from "cors";
 import "@tsed/ajv";
+import { config } from "dotenv";
+
+config();
 
 export const rootDir = __dirname;
 export const isProduction = process.env.NODE_ENV === Env.PROD;
@@ -42,7 +45,7 @@ if (isProduction) {
     disableRoutesSummary: isProduction
   },
   mongoose: {
-    url: "mongodb://127.0.0.1:27017/todo",
+    url: String(process.env.MONGO_URL),
     connectionOptions: {
       useNewUrlParser: true,
       useUnifiedTopology: true
