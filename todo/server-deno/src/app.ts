@@ -1,5 +1,5 @@
-import { Application } from "https://deno.land/x/oak/mod.ts";
-import { oakCors } from "https://deno.land/x/cors/mod.ts";
+import { Application } from "oak";
+import { oakCors } from "cors";
 import { TodoController } from './todos/index.ts';
 
 const app = new Application();

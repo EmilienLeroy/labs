@@ -1,0 +1,7 @@
+{
+  "imports": {
+     "oak": "https://deno.land/x/oak/mod.ts",
+     "cors": "https://deno.land/x/cors/mod.ts",
+     "mongo": "https://deno.land/x/mongo@v0.22.0/mod.ts"
+  }
+}

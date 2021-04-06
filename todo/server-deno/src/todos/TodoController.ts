@@ -1,5 +1,5 @@
-import { Router } from "https://deno.land/x/oak/mod.ts";
-import { Bson } from "https://deno.land/x/mongo@v0.22.0/mod.ts";
+import { Router } from "oak";
+import { Bson } from "mongo";
 import { todos } from './Todo.ts';
 
 
