@@ -1,44 +1,73 @@
-import { Router } from "oak";
+import { Router, Status } from "oak";
 import { Bson } from "mongo";
 import { todos } from './Todo.ts';
 
 
 const todoController = new Router({ prefix: '/todo' });
 
-todoController.get('/', async ({ response }) => {
-  response.body = await todos.find({}).toArray();
-})
-
-todoController.get('/:id',async ({ params, response }) => {
-  const todo = await todos.findOne({ _id: new Bson.ObjectId(params.id) });
-  
-  if (!todo) {
-    throw new Error('No todo');
+todoController.get('/', async (context) => {
+  const { response } = context;
+  try {
+    response.body = await todos.find({}).toArray();
+  } catch {
+    context.throw(Status.InternalServerError);
   }
-
-  response.body = todo;
 })
 
-todoController.post('/', async ({ request, response }) => {
-  const body = await request.body({ type: "json" }).value;
-  const newTodo = await todos.insertOne({
-    name: body.name,
-    do: false,
-  });
+todoController.get('/:id',async (context) => {
+  const { response, params } = context;
+  try {
+    if (Bson.ObjectId.isValid(params.id)) {
+      const todo = await todos.findOne({ _id: new Bson.ObjectId(params.id) });
+      if (!todo) {
+        context.throw(Status.NotFound);
+      }
 
-  response.body = newTodo;
+      response.body = todo;
+      return;
+    }
+
+    context.throw(Status.NotFound);
+  } catch(err) {
+    context.throw(err.status);
+  }
+})
+
+todoController.post('/', async (context) => {
+  const { request, response } = context;
+  try {
+    const body = await request.body({ type: "json" }).value;
+    const newTodo = await todos.insertOne({
+      name: body.name,
+      do: false,
+    });
+  
+    response.body = newTodo;
+  } catch(err) {
+    context.throw(Status.InternalServerError);
+  }
 });
 
-todoController.put('/:id', async ({ params, request, response }) => {
-  const body = await request.body({ type: "json" }).value;
-  const updateTodo = await todos.updateOne({ 
-    _id: new Bson.ObjectId(params.id), 
-  }, {
-    name: body.name,
-    do: body.do,
-  });
+todoController.put('/:id', async (context) => {
+  const { params, request, response } = context;
+  try {
+    if (Bson.ObjectId.isValid(params.id)) {
+      const body = await request.body({ type: "json" }).value;
+      const updateTodo = await todos.updateOne({ 
+        _id: new Bson.ObjectId(params.id), 
+      }, {
+        name: body.name,
+        do: body.do,
+      });
+  
+      response.body = updateTodo;
+      return;
+    }
 
-  response.body = updateTodo;
+    context.throw(Status.NotFound);
+  } catch(err) {
+    context.throw(err.status);
+  }
 })
 
 
