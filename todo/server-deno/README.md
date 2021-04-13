@@ -23,7 +23,7 @@ $ denon run start
 
 ## Todo
 
-* [ ] Add **.env** file.
+* [X] Add **.env** file.
 * [ ] Handle error.
 * [ ] Try denodb.
 * [ ] Configure for production.
