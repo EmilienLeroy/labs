@@ -3,7 +3,7 @@ const {Text} = require('ink');
 
 const Todo = (props) => {
     return (
-        <Text>{ props.todo.title }</Text>
+        <Text>{ props.todo.name }</Text>
     )
 };
 

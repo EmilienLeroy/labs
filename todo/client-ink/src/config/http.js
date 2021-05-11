@@ -1,6 +1,6 @@
 const axios = require('axios');
 const instance = axios.create({
-    baseURL: 'https://jsonplaceholder.typicode.com',
+    baseURL: process.env.API_URL,
 });
 
 module.exports = instance;

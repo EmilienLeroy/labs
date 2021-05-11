@@ -9,7 +9,7 @@ const Todos = () => {
     
     React.useEffect(() => {
         (async () => {
-            const { data } = await http.get('/todos');
+            const { data } = await http.get('/todo');
             setTodos(data);
         })()
     }, [])
