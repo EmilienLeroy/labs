@@ -1,8 +1,12 @@
 const React = require('react');
-const {render, Text} = require('ink');
+const importJsx = require('import-jsx');
+const {Box} = require('ink');
+const Todos = importJsx('./components/Todos');
 
-const App = () => {
-	return <Text color="green">ok</Text>;
-};
+const App = () => (
+	<Box>
+		<Todos></Todos>
+	</Box>
+);
 
-render(<App />);
+module.exports = App;
