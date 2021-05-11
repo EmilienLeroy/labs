@@ -1,11 +1,11 @@
 const React = require('react');
 const importJsx = require('import-jsx');
 const {Box} = require('ink');
-const Todos = importJsx('./components/Todos');
+const Menu = importJsx('./components/Menu');
 
 const App = () => (
 	<Box>
-		<Todos></Todos>
+		<Menu></Menu>
 	</Box>
 );
 
